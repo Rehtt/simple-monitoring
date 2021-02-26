@@ -3,6 +3,7 @@ mq:connect("192.168.199.242",1883,false,function(client)
     wifiConState.MQTT="Connected"
     dispStr(wifiConState)
     client:subscribe("/PC",0)
+    client:subscribe("/ON",0)
     end
 )
 mq:on("connfail", function(client, reason) 
@@ -17,11 +18,17 @@ mq:on("offline", function(client)
 mq:on("message",function(client,topic,data)
         pcall(function(i)
             local da=sjson.decode(i)
-            if da['Offline'] ~= nil then
-                local a
-                dispStr(da)
-            else
-                disps(da)
+            if topic == "/PC" then
+                if da['Offline'] ~= nil then
+                    local a
+                    dispStr(da)
+                else
+                    disps(da)
+                end
+            elseif topic == "/ON" then
+                if da["on"] then
+                    open()
+                end
             end
             end,data)
         

@@ -1,6 +1,6 @@
 dofile('ssd1306.lua')
 dofile('wifi.lua')
-
+dofile('wol.lua')
 wifiConState={}
 
 -- wifi连接后执行
